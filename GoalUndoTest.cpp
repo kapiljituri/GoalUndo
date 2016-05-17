@@ -97,7 +97,7 @@ TEST(GoalUndoTest, DefaultUndoOperationBehavior)
 
 	ASSERT_EQ("", task.getGoal());
 }
-
+/*
 TEST(GoalUndoTest, OverloadedUndoOperationBehavior)
 {
   GoalUndo task;
@@ -109,7 +109,7 @@ TEST(GoalUndoTest, OverloadedUndoOperationBehavior)
 
 	ASSERT_EQ("", task.getGoal());
 }
-
+*/
 TEST(GoalUndoTest, NoGoalIsAddedIfNameProvidedIsEmpty)
 {
   GoalUndo task;
@@ -176,5 +176,13 @@ TEST(GoalUndoTest, RemovingGoalRemovesAllOperationsRelatedToIt)
   task.undoGoal();
   ASSERT_EQ("", task.getGoal());
 	ASSERT_EQ("", task.getOperations());
+}
 
+TEST(GoalUndoTest, AddingOperationInEmptyListAddsBothGoalAndOperation)
+{
+  GoalUndo task;
+  task.addOperation("Hello");
+
+  ASSERT_EQ("Hello", task.getGoal());
+	ASSERT_EQ("Hello", task.getOperations());
 }
