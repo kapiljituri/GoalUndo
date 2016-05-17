@@ -109,3 +109,72 @@ TEST(GoalUndoTest, OverloadedUndoOperationBehavior)
 
 	ASSERT_EQ("", task.getGoal());
 }
+
+TEST(GoalUndoTest, NoGoalIsAddedIfNameProvidedIsEmpty)
+{
+  GoalUndo task;
+  task.addOperation("", "");
+  task.addOperation("");
+
+	ASSERT_EQ("", task.getGoal());
+}
+
+TEST(GoalUndoTest, NoOperationIsAddedIfNameProvidedIsEmpty)
+{
+  GoalUndo task;
+  task.addOperation("", "");
+  task.addOperation("");
+
+	ASSERT_EQ("", task.getOperations());
+}
+
+TEST(GoalUndoTest, GoalIsNotAddedIfOperationNameIsEmpty)
+{
+  GoalUndo task;
+  task.addOperation("Hello", "");
+
+	ASSERT_EQ("", task.getGoal());
+}
+
+TEST(GoalUndoTest, RemovingGoalRemovesAllOperationsRelatedToIt)
+{
+  GoalUndo task;
+  task.addOperation("Dogs", "Husky");
+  task.addOperation("German Shepherd");
+  task.addOperation("Bulldog");
+  task.addOperation("Labrador");
+
+  task.addOperation("Fruits", "Apple");
+  task.addOperation("Mango");
+  task.addOperation("Grapes");
+  task.addOperation("Strawberry");
+
+  task.addOperation("Cats", "Lynx");
+  task.addOperation("Leopard");
+  task.addOperation("Tiger");
+  task.addOperation("Lion");
+  task.addOperation("Cheetah");
+
+  ASSERT_EQ("Cats", task.getGoal());
+	ASSERT_EQ("Lynx Leopard Tiger Lion Cheetah", task.getOperations());
+
+  task.undoGoal();
+  ASSERT_EQ("Fruits", task.getGoal());
+	ASSERT_EQ("Apple Mango Grapes Strawberry", task.getOperations());
+
+  task.undoGoal();
+  ASSERT_EQ("Dogs", task.getGoal());
+	ASSERT_EQ("Husky German Shepherd Bulldog Labrador", task.getOperations());
+
+  task.undoGoal();
+  ASSERT_EQ("", task.getGoal());
+	ASSERT_EQ("", task.getOperations());
+
+  task.undoGoal();  // Doing multiple undo on empty list
+  task.undoGoal();
+  task.undoGoal();
+  task.undoGoal();
+  ASSERT_EQ("", task.getGoal());
+	ASSERT_EQ("", task.getOperations());
+
+}
