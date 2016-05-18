@@ -178,3 +178,11 @@ TEST(GoalUndoTest, RemovingGoalRemovesAllOperationsRelatedToIt)
 	ASSERT_EQ("", task.getOperations());
 
 }
+
+TEST(GoalUndoTest, AddingOperationInEmptyListAddsBothGoalAndOperation)
+{
+  GoalUndo task;
+  task.addOperation("Hello");
+  ASSERT_EQ("Hello", task.getGoal());
+	ASSERT_EQ("Hello", task.getOperations());
+}
